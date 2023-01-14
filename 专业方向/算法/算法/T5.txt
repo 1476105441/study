@@ -1,0 +1,39 @@
+import java.util.Scanner;
+
+public class Case05 {
+    static int money = Integer.MAX_VALUE;//标志一下当前没有最小值
+    static boolean[] flag = new boolean[30];
+    static int[][] dis = new int[30][30];
+    static int n;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();//节点数
+        for (int i=0;i<n;i++) {
+            for (int j=0;j<n;j++) {
+                dis[i][j] = sc.nextInt();
+            }
+        }
+        flag[0] = true;//起点必须是0
+        back(0,0,1);//当前集合
+        System.out.println(money);
+    }
+    static void back(int curNode,int cost,int nodeNum) { //当前节点 当前花费 集合节点总数
+        //递归出口 : 因为我们的终点必须是n
+        if (cost>=money) return;
+        if (nodeNum == n-1) {
+            if (money > cost+dis[curNode][n-1]) {
+                money = cost+dis[curNode][n-1];
+            }
+            return;
+        }
+        //其他节点
+        for (int i=1;i<n-1;i++) { //0是起点，所以不用考虑了
+            if (!flag[i]) { //当前节点还没有被访问
+                //景点回溯算法模板
+                flag[i] = true;
+                back(i,cost+dis[curNode][i],nodeNum+1);
+                flag[i] = false;
+            }
+        }
+    }
+}
